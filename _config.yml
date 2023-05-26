@@ -28,7 +28,7 @@ twitter_username: N/A
 github_username:  Infinity315
 
 # Build settings
-theme: hacker
+theme: pages-themes/dinky@v0.2.0
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
