@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<head>
+<script type="text/javascript" src="./scripts/d3.v5.min.js"></script>
+<script type="text/javascript" src="./scripts/hilbertutils.js"></script>
+<script type="text/javascript" src="./scripts/audioutils.js"></script>
+<link rel="stylesheet" href="style.css">
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+</head>
+<h1>D3 Visualization of a Hilbert curve</h1>
+
+
+<body>
+    <label> Choose a file to be 'Hilbertized' and listened to</label>
+    <div id="curve" class="graph">  
+        <img alt="" width="600" height="600" id="imageOutput">
+    </div>
+
+    
+
+    <div>
+        <input type="file"
+            id="image" name="image"
+            accept="image/png, image/jpeg"
+            oninput="updatebg(this)">
+        
+        <input type="range" 
+            value="4" 
+            id="orderInputId" 
+            min="1" max="8" 
+            step="1" 
+            oninput="orderOutputId.value = orderInputId.value; updateOrder(orderInputId.value);">  
+        <output> Order: </output><output id="orderOutputId">4</output>
+
+        <input type="button" 
+        value="Play" 
+        id="playSoundBtn"
+        oninput="playImg();">
+    </div>
+
+    
+    
+</body>
+
+<script type="text/javascript">
+
+    var width = 600;
+    var height = 600;
+    var initial_order = 4;
+    var audioCtx = new AudioContext();
+
+    const btn = document.getElementById("playSoundBtn");
+    btn.addEventListener('click', playImg);
+
+
+    var svg = d3.select("#curve").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    svg.append("rect")
+        .attr('width', "100%") 
+        .attr("height", "100%")
+        .attr("fill", 'grey')
+        .attr('opacity', '25%');
+
+        
+    
+    var path = svg.append("path")
+        .style("stroke", "black")
+        .style("stroke-width", 64 / 2**initial_order)
+        .style("opacity", 0.5)
+        .style("fill", "none")
+        .attr("d", generatePath(initial_order, width));
+    
+    var len = path.node().getTotalLength();
+
+    var arr = [],
+        volume = 0.2,
+        seconds = 2.0,
+        tone = 441
+  
+    for (var i = 0; i < audioCtx.sampleRate * seconds; i++) {
+        arr[i] = sineWaveAt(i, tone, audioCtx) * volume
+    }
+
+    function updateOrder(newOrder)
+    {
+        //playSound(arr, audioCtx);
+        path.style("stroke", "black")
+            .style("stroke-width", 64 / 2**newOrder)
+            .style("fill", "none")
+            .attr("d", generatePath(newOrder, width))
+            .interrupt();
+
+        len = path.node().getTotalLength();
+
+        path.attr('stroke-dasharray', len + " " + len)
+            .attr("stroke-dashoffset", len)
+            .transition()
+            .duration(2000)
+            .attr('stroke-dashoffset', 0);
+        
+    }
+
+
+    function updatebg(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#imageOutput")
+                    .attr('src', e.target.result)
+                    .attr('width', width)
+                    .attr('height', height)
+                    .attr("opacity", "25%");
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function playImg() {
+        console.log("Test play image");
+    }
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,90 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+body {
+    background-color: rgba(255, 255, 255, 0.737);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 85%;
+    top:5%;
+    bottom: 5%;
+    left: 5%;
+    right: 5%;
+    padding: 10px;
+    position: static;
+
+    margin: auto;
+}
+
+
+label {
+    display: block;
+    position: static;
+
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+div {
+    width: 95%;
+    height: min-content;
+    position: static;
+
+    background-color: rgba(130, 129, 129, 0.226);
+    outline: none;
+    border-radius: 20px;
+    
+    padding: 25px;
+    
+    margin: 25px auto auto 25px;
+    
+}
+
+img {
+  image-rendering: pixelated;
+}
+
+.graph {
+    display: grid;
+    align-items: center;
+    background-color: rgba(130, 129, 129, 0.226);
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    justify-items: center;
+    outline: solid;
+}
+
+.graph > * {
+  grid-column-start: 1;
+  grid-row-start: 1;
+  align-self: center;
+}
+
+
+.control_layout {
+  display: grid;
+}
+
+control_widget {
+  display: grid;
+  justify-items: normal;
+  padding: 20px;
+}
